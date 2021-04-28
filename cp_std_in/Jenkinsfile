@@ -53,7 +53,7 @@ pipeline {
 								String[] res = t.split(' ')
 								a += res[1] + ';'
 							}
-							sh(script: "#!/bin/sh +x\necho $a >> res.csv")
+							sh(script: "#!/bin/sh +x\necho '$a' >> res.csv")
 							sh 'rm b'
 							bufsize <<= 1
 						}
