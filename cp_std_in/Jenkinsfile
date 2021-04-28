@@ -37,31 +37,28 @@ pipeline {
 				dir(appDir) {
 					script {
 						int bufsize = 1
-						String[] time
-						String a
+						String time
+						String a = ''
 
 						sh "touch res.csv"
 						while(bufsize <= 524288)
 						{
 							int i = 0
-							sh "#!/bin/sh +x\ncp a b"
-							a = sh (script: "./time.sh ${bufsize} b", returnStdout: true)
-							echo a
-							time = a.split('\n')
-							a =  "${bufsize};"
-							time[0].split(' ').each { t -> 
-								echo t
-								if (i % 2) {	
-									//String[] res = t.split(' ')
-									//a += res[1] + ';'
+							sh 'cp a b'
+							time = sh (script: "./time.sh ${bufsize} b", returnStdout: true).split('\n')[0]
+							//time = a.split('\n')
+							a += "${bufsize};"
+							time.split(' ').each { t -> 
+								if (i % 2) 	
 									a += t + ';'
-								}
 								++i
 							}
-							sh(script: "#!/bin/sh +x\necho '$a' >> res.csv")
+							//sh(script: "#!/bin/sh +x\necho '$a' >> res.csv")
+							a += '\n'
 							sh 'rm b'
 							bufsize <<= 1
 						}
+						writeFile(file: 'res.csv', text: a)
 						archiveArtifacts artifacts: '*.csv', fingerprint: true, allowEmptyArchive: true
 					}
 				}
