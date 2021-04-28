@@ -43,13 +43,13 @@ pipeline {
 						sh "touch res.csv"
 						while(bufsize <= 524288)
 						{
-							sh "/bin/sh +x cp a 1"
-							time = sh (script: "time -p ./app ${bufsize} < 1 > /dev/null", returnStdout: true).split('\n')
+							sh "#!/bin/sh +x\ncp a 1"
+							time = sh (script: "#!/bin/sh +x\ntime -p ./app ${bufsize} < 1 > /dev/null", returnStdout: true).split('\n')
 							a =  "${bufsize};"
 							time.each { t -> 
 								a += t.split(' ')[1] + ';'
 							}
-							sh(script: "/bin/sh +x echo $a >> res.csv")
+							sh(script: "#!/bin/sh +x\necho $a >> res.csv")
 							sh 'rm 1'
 							bufsize <<= 1
 						}
