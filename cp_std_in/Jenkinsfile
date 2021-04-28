@@ -40,7 +40,7 @@ pipeline {
 						while(bufsize <= 524288)
 						{
 							sh "cp a 1"
-							sh "time ./app ${bufsize} < 1 > /dev/null"
+							sh "time -p ./app ${bufsize} < 1 > /dev/null"
 							sh 'rm 1'
 							bufsize <<= 1
 						}
