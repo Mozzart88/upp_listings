@@ -37,13 +37,23 @@ pipeline {
 				dir(appDir) {
 					script {
 						int bufsize = 1
+						String[] time
+						String a
+
+						sh "touch res.csv"
 						while(bufsize <= 524288)
 						{
-							sh "cp a 1"
-							sh "time -p ./app ${bufsize} < 1 > /dev/null"
+							sh "/bin/sh +x cp a 1"
+							time = sh (script: "time -p ./app ${bufsize} < 1 > /dev/null", returnStdout: true).split('\n')
+							a =  "${bufsize};"
+							time.each { t -> 
+								a += t.split(' ')[1] + ';'
+							}
+							sh(script: "/bin/sh +x echo $a >> res.csv")
 							sh 'rm 1'
 							bufsize <<= 1
 						}
+						archiveArtifact artifact: '*.csv', fingerprint: true, allowEmptyArchive: true
 					}
 				}
 			}
