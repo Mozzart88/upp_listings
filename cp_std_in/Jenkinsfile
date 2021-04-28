@@ -47,6 +47,7 @@ pipeline {
 							time = sh (script: "time -p ./app ${bufsize} < b > /dev/null", returnStdout: true).split('\n')
 							a =  "${bufsize};"
 							time.each { t -> 
+								echo t
 								String[] res = t.split(' ')
 								a += res[1] + ';'
 							}
