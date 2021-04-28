@@ -18,7 +18,7 @@ pipeline {
 				dir(appDir) {
 					script {
 						sh "clang -Wall -Wextra -Werror -o app main.c"
-						sh 'clang -Wall Wextra -Werror -o file_creater file_filler.c'
+						sh 'clang -Wall -Wextra -Werror -o file_creater file_filler.c'
 					}
 				}
 			}
