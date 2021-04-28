@@ -14,6 +14,7 @@ pipeline {
 			steps {
 				script {
 					appDir = 'cp_std_in'
+					sh "set +x"
 				}
 				dir(appDir) {
 					script {
@@ -44,7 +45,7 @@ pipeline {
 						while(bufsize <= 524288)
 						{
 							int i = 0
-							sh 'cp a b'
+							sh '#!/bin/sh -ve\ncp a b'
 							time = sh (script: "./time.sh ${bufsize} b", returnStdout: true).split('\n')[0]
 							//time = a.split('\n')
 							a += "${bufsize};"
