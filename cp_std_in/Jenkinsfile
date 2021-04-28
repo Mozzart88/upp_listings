@@ -57,7 +57,7 @@ pipeline {
 							sh 'rm b'
 							bufsize <<= 1
 						}
-						archiveArtifact artifact: '*.csv', fingerprint: true, allowEmptyArchive: true
+						archiveArtifacts artifacts: '*.csv', fingerprint: true, allowEmptyArchive: true
 					}
 				}
 			}
