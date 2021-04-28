@@ -44,7 +44,8 @@ pipeline {
 						while(bufsize <= 524288)
 						{
 							sh "#!/bin/sh +x\ncp a b"
-							time = sh (script: "time -p ./app ${bufsize} < b > /dev/null 2>&1", returnStdout: true).split('\n')
+							a = sh (script: "time -p ./app ${bufsize} < b > /dev/null", returnStdout: true, returnStderr: true).split('\n')
+							echo a
 							a =  "${bufsize};"
 							time.each { t -> 
 								echo t
