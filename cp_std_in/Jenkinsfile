@@ -1,0 +1,52 @@
+#! /usr/bin/env groovy
+
+pipeline {
+	agent any
+	parameters {
+		string name: 'fileSize', trim: true
+	}
+	options {
+		timestamps()
+		timeout time: 480, unit: 'MINUTES'
+	}
+	stages {
+		stage('Compile') {
+			steps {
+				script {
+					appDir = 'cp_std_in'
+				}
+				dir(appDir) {
+					script {
+						sh "clang -Wall -Wextra -Werror -o app main.c"
+						sh 'clang -Wall Wextra -Werror -o file_creater file_filler.c'
+					}
+				}
+			}
+		}
+		stage('Create file') {
+			steps {
+				dir(appDir) {
+					script {
+						sh "./file_creater a ${params.fileSize}"
+					}
+				}
+			}
+		}
+		stage('Read file') {
+			steps {
+				dir(appDir) {
+					script {
+						int bufsize = 1
+						while(bufsize <= 524288)
+						{
+							sh "cp a 1"
+							sh "time ./app ${bufsize} < 1 > /dev/null"
+							sh 'rm 1'
+							bufsize <<= 1
+						}
+					}
+				}
+			}
+		}
+	}
+}
